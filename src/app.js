@@ -1,9 +1,8 @@
 import express from 'express'
-
+import cookieParser from 'cookie-parser'
 import logger from "./logger.js";
 import morgan from "morgan";
 import cors from 'cors'
-import healthCheckRouter from './routes/healthCheck.routes.js'
 
 const app = express();
 
@@ -36,8 +35,16 @@ app.use(
 app.use(express.json({limit:'16kb'})) // it defines the memory
 app.use(express.urlencoded({extended:true , limit: '16kb'}))
 app.use(express.static('public'))
+app.use(cookieParser())
+
+// route import
+import healthCheckRouter from './routes/healthCheck.routes.js'
+import userRouter from './routes/user.routes'
+
 
 // routes handling
-
 app.use('/api/v1/healthcheck',healthCheckRouter)
+app.use('/api/v1/user',userRouter)
+
+
 export {app}
